@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Search, 
   Menu, 
@@ -25,10 +25,20 @@ import {
   Zap,
   ChevronDown,
   ChevronUp,
-  SkipForward
+  SkipForward,
+  Upload,
+  LogIn,
+  UserPlus,
+  Heart,
+  MessageCircle,
+  Send,
+  Bookmark,
+  BookmarkCheck
 } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { formatDistanceToNow } from 'date-fns';
+import { useAuth } from './auth';
+import { UserMenu, UploadModal } from './modals';
 
 // Mock data for videos
 export const mockVideos = [
