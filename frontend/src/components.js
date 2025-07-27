@@ -41,7 +41,59 @@ export const mockVideos = [
     thumbnail: 'https://images.unsplash.com/photo-1614179924047-e1ab49a0a0cf',
     duration: '12:34',
     verified: true,
-    description: 'Welcome to the most insane gaming setup tour you\'ve ever seen! In this video, I\'ll show you my complete 2025 gaming battlestation...'
+    description: 'Welcome to the most insane gaming setup tour you\'ve ever seen! In this video, I\'ll show you my complete 2025 gaming battlestation...',
+    recap: {
+      sections: [
+        {
+          timestamp: '0:00',
+          title: 'Introduction & Overview',
+          takeaways: [
+            'Total setup cost: $8,500',
+            'Three monitor configuration with RTX 4090',
+            'Custom water cooling loop featured'
+          ]
+        },
+        {
+          timestamp: '2:15',
+          title: 'Main Gaming PC Specs',
+          takeaways: [
+            'AMD Ryzen 9 7900X processor',
+            'RTX 4090 graphics card with custom cooling',
+            '64GB DDR5 RGB memory',
+            'Custom hardline water cooling system'
+          ]
+        },
+        {
+          timestamp: '5:30',
+          title: 'Monitor Setup & Peripherals',
+          takeaways: [
+            '34" ultrawide primary monitor (3440x1440)',
+            'Two 27" secondary displays for multitasking',
+            'Mechanical keyboard with custom switches',
+            'High-end gaming mouse with 8000Hz polling rate'
+          ]
+        },
+        {
+          timestamp: '8:45',
+          title: 'RGB Lighting & Aesthetics',
+          takeaways: [
+            'Synchronized RGB ecosystem across all components',
+            'Ambient bias lighting behind monitors',
+            'Custom cable management with RGB extensions',
+            'Smart home integration for lighting control'
+          ]
+        },
+        {
+          timestamp: '11:00',
+          title: 'Performance Testing & Conclusion',
+          takeaways: [
+            '4K gaming at 144+ FPS on most titles',
+            'Content creation capabilities demonstrated',
+            'Future upgrade path discussed'
+          ]
+        }
+      ]
+    }
   },
   {
     id: '2',
@@ -52,7 +104,59 @@ export const mockVideos = [
     thumbnail: 'https://images.unsplash.com/photo-1514986888952-8cd320577b68',
     duration: '10:24',
     verified: false,
-    description: 'This simple pasta recipe has been passed down through generations in my Italian family...'
+    description: 'This simple pasta recipe has been passed down through generations in my Italian family...',
+    recap: {
+      sections: [
+        {
+          timestamp: '0:00',
+          title: 'Ingredients & Preparation',
+          takeaways: [
+            'Only 6 ingredients needed',
+            'Fresh pasta vs dried pasta comparison',
+            'Essential tools: large pot, wooden spoon, cheese grater'
+          ]
+        },
+        {
+          timestamp: '1:30',
+          title: 'Cooking the Perfect Pasta',
+          takeaways: [
+            'Salt water like the sea - 1 tablespoon per liter',
+            'Never break spaghetti - let it soften naturally',
+            'Save pasta water - liquid gold for sauce',
+            'Al dente timing: 1 minute less than package instructions'
+          ]
+        },
+        {
+          timestamp: '4:15',
+          title: 'Creating the Sauce',
+          takeaways: [
+            'Garlic and olive oil base (aglio e olio technique)',
+            'Heat control is crucial - medium-low heat',
+            'Fresh herbs added at the end for maximum flavor',
+            'Pasta water creates silky sauce consistency'
+          ]
+        },
+        {
+          timestamp: '7:00',
+          title: 'Final Assembly & Plating',
+          takeaways: [
+            'Toss pasta in pan, not bowl for better coating',
+            'Fresh Parmesan grated at the table',
+            'Garnish with fresh basil and cracked pepper',
+            'Serve immediately while hot'
+          ]
+        },
+        {
+          timestamp: '9:15',
+          title: 'Pro Tips & Variations',
+          takeaways: [
+            'Make double batch - leftovers reheat well',
+            'Add protein: pancetta, chicken, or shrimp',
+            'Vegetarian option with roasted vegetables'
+          ]
+        }
+      ]
+    }
   },
   {
     id: '3',
@@ -63,7 +167,66 @@ export const mockVideos = [
     thumbnail: 'https://images.unsplash.com/photo-1616588589676-62b3bd4ff6d2',
     duration: '18:45',
     verified: true,
-    description: 'Building the ultimate RGB gaming PC with custom water cooling loop. This beast can handle anything!'
+    description: 'Building the ultimate RGB gaming PC with custom water cooling loop. This beast can handle anything!',
+    recap: {
+      sections: [
+        {
+          timestamp: '0:00',
+          title: 'Build Overview & Components',
+          takeaways: [
+            'Total build cost: $4,200',
+            'Custom loop cooling CPU and GPU',
+            'Emphasis on both performance and aesthetics'
+          ]
+        },
+        {
+          timestamp: '2:30',
+          title: 'Case Preparation & Planning',
+          takeaways: [
+            'Lian Li O11 Dynamic chosen for optimal water cooling',
+            'Radiator placement strategy explained',
+            'Cable management routes planned in advance'
+          ]
+        },
+        {
+          timestamp: '5:45',
+          title: 'Installing Core Components',
+          takeaways: [
+            'Motherboard installation with proper standoffs',
+            'RAM installation - populate slots 2 and 4 first',
+            'M.2 SSD placement under motherboard heatsink'
+          ]
+        },
+        {
+          timestamp: '9:15',
+          title: 'Water Cooling Loop Assembly',
+          takeaways: [
+            'Radiator and fan configuration (push vs pull)',
+            'Pump and reservoir combo unit installation',
+            'Hardline tubing bending techniques',
+            'Leak testing procedure before powering on'
+          ]
+        },
+        {
+          timestamp: '14:20',
+          title: 'RGB Setup & Software Configuration',
+          takeaways: [
+            'RGB synchronization across all components',
+            'Software setup for unified lighting control',
+            'Custom lighting profiles for different scenarios'
+          ]
+        },
+        {
+          timestamp: '16:30',
+          title: 'Final Testing & Benchmarks',
+          takeaways: [
+            'Temperature testing under full load',
+            'Benchmark scores compared to air cooling',
+            'Noise level comparison'
+          ]
+        }
+      ]
+    }
   },
   {
     id: '4',
@@ -74,7 +237,56 @@ export const mockVideos = [
     thumbnail: 'https://images.unsplash.com/photo-1489395131208-596c1ecb2a39',
     duration: '15:20',
     verified: true,
-    description: 'Join me as I explore the most beautiful hidden spots in Iceland that tourists never see!'
+    description: 'Join me as I explore the most beautiful hidden spots in Iceland that tourists never see!',
+    recap: {
+      sections: [
+        {
+          timestamp: '0:00',
+          title: 'Journey Begins - Reykjavik to Highlands',
+          takeaways: [
+            '4WD vehicle essential for highland access',
+            'Best time to visit: July-September',
+            'Camping gear and safety equipment required'
+          ]
+        },
+        {
+          timestamp: '3:10',
+          title: 'First Hidden Spot - Secret Waterfall',
+          takeaways: [
+            'GPS coordinates: 64.1265° N, 21.8174° W',
+            '2-hour hike from nearest road',
+            'Bring waterproof gear - lots of mist and spray'
+          ]
+        },
+        {
+          timestamp: '6:45',
+          title: 'Highland Hot Springs Discovery',
+          takeaways: [
+            'Natural geothermal pools at perfect temperature',
+            'No facilities - wild camping experience',
+            'Respect nature - leave no trace principles'
+          ]
+        },
+        {
+          timestamp: '9:20',
+          title: 'Glacier Lagoon Off the Beaten Path',
+          takeaways: [
+            'Alternative to crowded Jökulsárlón',
+            'Incredible ice formations and crystal caves',
+            'Photography tips for capturing ice and light'
+          ]
+        },
+        {
+          timestamp: '12:15',
+          title: 'Northern Lights Planning & Tips',
+          takeaways: [
+            'Best aurora viewing spots away from light pollution',
+            'Aurora forecast apps and timing strategies',
+            'Camera settings for northern lights photography'
+          ]
+        }
+      ]
+    }
   },
   {
     id: '5',
@@ -85,7 +297,47 @@ export const mockVideos = [
     thumbnail: 'https://images.unsplash.com/photo-1528712306091-ed0763094c98',
     duration: '8:15',
     verified: false,
-    description: 'Master these 15 cooking hacks and you\'ll cook like a pro chef in no time!'
+    description: 'Master these 15 cooking hacks and you\'ll cook like a pro chef in no time!',
+    recap: {
+      sections: [
+        {
+          timestamp: '0:00',
+          title: 'Kitchen Setup & Knife Skills',
+          takeaways: [
+            'Sharp knives are safer than dull ones',
+            'Proper cutting board selection and care',
+            'Basic knife grip and cutting techniques'
+          ]
+        },
+        {
+          timestamp: '2:20',
+          title: 'Time-Saving Prep Hacks',
+          takeaways: [
+            'Mise en place - prep everything before cooking',
+            'Garlic peeling trick using two bowls',
+            'Quick tomato peeling with boiling water method'
+          ]
+        },
+        {
+          timestamp: '4:15',
+          title: 'Cooking Temperature Secrets',
+          takeaways: [
+            'When to use high, medium, and low heat',
+            'Visual cues for oil temperature without thermometer',
+            'Resting meat is crucial for juiciness'
+          ]
+        },
+        {
+          timestamp: '6:30',
+          title: 'Seasoning & Flavor Building',
+          takeaways: [
+            'Salt early and often for better flavor penetration',
+            'Layer flavors throughout cooking process',
+            'Fresh herbs vs dried herbs - when to use each'
+          ]
+        }
+      ]
+    }
   },
   {
     id: '6',
@@ -96,7 +348,47 @@ export const mockVideos = [
     thumbnail: 'https://images.unsplash.com/photo-1675049626914-b2e051e92f23',
     duration: '14:30',
     verified: true,
-    description: 'Everything you need to know about setting up the perfect dual monitor gaming station.'
+    description: 'Everything you need to know about setting up the perfect dual monitor gaming station.',
+    recap: {
+      sections: [
+        {
+          timestamp: '0:00',
+          title: 'Monitor Selection Criteria',
+          takeaways: [
+            'Match refresh rates for smooth experience',
+            'Consider size differences - 27" + 24" combo works well',
+            'Panel type importance: IPS vs VA vs TN'
+          ]
+        },
+        {
+          timestamp: '3:15',
+          title: 'Hardware Requirements & Setup',
+          takeaways: [
+            'Graphics card needs multiple display outputs',
+            'Monitor arm vs desk stands comparison',
+            'Cable management solutions for clean setup'
+          ]
+        },
+        {
+          timestamp: '7:00',
+          title: 'Software Configuration Windows',
+          takeaways: [
+            'Display settings optimization',
+            'Gaming on primary, utilities on secondary',
+            'Multi-monitor wallpaper setup tips'
+          ]
+        },
+        {
+          timestamp: '10:45',
+          title: 'Gaming Optimization & Performance',
+          takeaways: [
+            'Which games benefit from dual monitors',
+            'Performance impact analysis',
+            'Best practices for competitive gaming'
+          ]
+        }
+      ]
+    }
   },
   {
     id: '7',
@@ -107,7 +399,56 @@ export const mockVideos = [
     thumbnail: 'https://images.unsplash.com/photo-1603481588273-2f908a9a7a1b',
     duration: '16:45',
     verified: false,
-    description: 'Building an amazing gaming PC for under $800 - you won\'t believe the performance!'
+    description: 'Building an amazing gaming PC for under $800 - you won\'t believe the performance!',
+    recap: {
+      sections: [
+        {
+          timestamp: '0:00',
+          title: 'Budget Breakdown & Goals',
+          takeaways: [
+            'Total budget: $750 target price',
+            '1080p gaming at 60+ FPS goal',
+            'Future upgrade path considered'
+          ]
+        },
+        {
+          timestamp: '2:45',
+          title: 'Component Selection Strategy',
+          takeaways: [
+            'AMD Ryzen 5 5600 - best budget CPU',
+            'RTX 3060 or RX 6600 graphics options',
+            'B450 motherboard for cost savings'
+          ]
+        },
+        {
+          timestamp: '6:20',
+          title: 'Assembly Process & Tips',
+          takeaways: [
+            'Anti-static precautions during build',
+            'RAM installation - ensure proper seating',
+            'Cable management on budget case'
+          ]
+        },
+        {
+          timestamp: '11:30',
+          title: 'Performance Testing & Games',
+          takeaways: [
+            'Modern games at medium-high settings',
+            '60+ FPS achieved in most popular titles',
+            'Upgrade priorities for future improvements'
+          ]
+        },
+        {
+          timestamp: '14:15',
+          title: 'Money-Saving Tips',
+          takeaways: [
+            'When to buy used vs new components',
+            'Best times of year for PC part sales',
+            'Free software alternatives to expensive programs'
+          ]
+        }
+      ]
+    }
   },
   {
     id: '8',
@@ -118,7 +459,56 @@ export const mockVideos = [
     thumbnail: 'https://images.unsplash.com/photo-1579917571494-9b6f74f6e07d',
     duration: '22:10',
     verified: true,
-    description: 'Join me for a peaceful evening cooking over an open fire as the sun sets over the mountains.'
+    description: 'Join me for a peaceful evening cooking over an open fire as the sun sets over the mountains.',
+    recap: {
+      sections: [
+        {
+          timestamp: '0:00',
+          title: 'Setting Up Camp & Fire Safety',
+          takeaways: [
+            'Choose safe location away from overhanging branches',
+            'Fire ring setup and safety equipment needed',
+            'Local fire regulations and permit requirements'
+          ]
+        },
+        {
+          timestamp: '4:30',
+          title: 'Campfire Cooking Equipment',
+          takeaways: [
+            'Cast iron cookware advantages for open fire',
+            'Tripod cooking setup vs grill grates',
+            'Essential tools: long handles, heat-resistant gloves'
+          ]
+        },
+        {
+          timestamp: '8:15',
+          title: 'Fire Management & Temperature Control',
+          takeaways: [
+            'Wood selection: hardwood vs softwood',
+            'Creating cooking coals vs flames',
+            'Adjusting heat by moving coals and cookware'
+          ]
+        },
+        {
+          timestamp: '12:45',
+          title: 'Preparing the Sunset Feast',
+          takeaways: [
+            'Simple one-pot meals work best',
+            'Prep ingredients before starting fire',
+            'Cooking timing with sunset for perfect ambiance'
+          ]
+        },
+        {
+          timestamp: '18:20',
+          title: 'Cleanup & Leave No Trace',
+          takeaways: [
+            'Proper fire extinguishing techniques',
+            'Pack out all trash and food scraps',
+            'Restore campsite to natural state'
+          ]
+        }
+      ]
+    }
   }
 ];
 
