@@ -21,7 +21,11 @@ import {
   ThumbsDown,
   Share,
   Download,
-  Plus
+  Plus,
+  Zap,
+  ChevronDown,
+  ChevronUp,
+  SkipForward
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { formatDistanceToNow } from 'date-fns';
