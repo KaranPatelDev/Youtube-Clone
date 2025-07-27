@@ -884,6 +884,19 @@ export const VideoPlayer = ({ video, onBack }) => {
   const videoId = 'dQw4w9WgXcQ'; // Mock video ID
   const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=1&showinfo=0&rel=0`;
 
+  // Handle timestamp clicks from Dynamic Recap
+  const handleTimestampClick = (timestamp) => {
+    // Convert timestamp to seconds (this is a mock implementation)
+    const [minutes, seconds] = timestamp.split(':').map(Number);
+    const totalSeconds = minutes * 60 + seconds;
+    
+    // In a real implementation, you would seek the video to this time
+    console.log(`Seeking to ${totalSeconds} seconds (${timestamp})`);
+    
+    // Show a notification to user (mock)
+    alert(`Jumping to ${timestamp} - ${video.recap?.sections.find(s => s.timestamp === timestamp)?.title || 'Unknown section'}`);
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-6 py-6">
       <button
@@ -980,13 +993,21 @@ export const VideoPlayer = ({ video, onBack }) => {
             </div>
             
             {/* Video description */}
-            <div className="bg-gray-50 rounded-lg p-4">
+            <div className="bg-gray-50 rounded-lg p-4 mb-6">
               <div className="flex items-center space-x-4 text-sm text-gray-600 mb-2">
                 <span>{video.views} views</span>
                 <span>{formatDistanceToNow(video.uploadTime)} ago</span>
               </div>
               <p className="text-gray-800">{video.description}</p>
             </div>
+
+            {/* Dynamic Recap Component */}
+            {video.recap && (
+              <DynamicRecap 
+                video={video} 
+                onTimestampClick={handleTimestampClick}
+              />
+            )}
             
             {/* Comments section */}
             <div className="mt-8">
