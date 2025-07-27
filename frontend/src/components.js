@@ -660,6 +660,125 @@ export const Sidebar = ({ isOpen }) => {
   );
 };
 
+// Dynamic Recap Component
+export const DynamicRecap = ({ video, onTimestampClick }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const handleTimestampClick = (timestamp) => {
+    if (onTimestampClick) {
+      onTimestampClick(timestamp);
+    }
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg border border-blue-200 overflow-hidden mb-6"
+    >
+      {/* Header */}
+      <div 
+        className="p-4 cursor-pointer hover:bg-gradient-to-r hover:from-blue-100 hover:to-purple-100 transition-colors"
+        onClick={() => setIsExpanded(!isExpanded)}
+      >
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center">
+              <Zap size={18} className="text-white" />
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900">
+                🔁 Dynamic Recap — AI-Powered Video Summary
+              </h3>
+              <p className="text-sm text-gray-600">
+                Watch smarter. Skip the fluff. • {video.recap?.sections.length || 0} key sections
+              </p>
+            </div>
+          </div>
+          <motion.div
+            animate={{ rotate: isExpanded ? 180 : 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            <ChevronDown size={20} className="text-gray-600" />
+          </motion.div>
+        </div>
+      </div>
+
+      {/* Content */}
+      <motion.div
+        initial={false}
+        animate={{ height: isExpanded ? 'auto' : 0, opacity: isExpanded ? 1 : 0 }}
+        transition={{ duration: 0.3, ease: 'easeInOut' }}
+        className="overflow-hidden"
+      >
+        <div className="px-4 pb-4">
+          <div className="border-t border-blue-200 pt-4">
+            {video.recap?.sections.map((section, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: index * 0.1 }}
+                className="mb-4 last:mb-0 group"
+              >
+                <div className="flex items-start space-x-4">
+                  {/* Timestamp */}
+                  <button
+                    onClick={() => handleTimestampClick(section.timestamp)}
+                    className="flex-shrink-0 bg-white border border-blue-300 hover:border-blue-500 hover:bg-blue-50 px-3 py-1 rounded-full text-sm font-medium text-blue-700 transition-colors group-hover:shadow-md"
+                  >
+                    📍 {section.timestamp}
+                  </button>
+                  
+                  {/* Content */}
+                  <div className="flex-1">
+                    <h4 className="text-base font-semibold text-gray-900 mb-2 group-hover:text-blue-900 transition-colors">
+                      {section.title}
+                    </h4>
+                    <ul className="space-y-1">
+                      {section.takeaways.map((takeaway, takeawayIndex) => (
+                        <li key={takeawayIndex} className="flex items-start space-x-2 text-sm text-gray-700">
+                          <span className="text-blue-500 mt-1">🔑</span>
+                          <span className="group-hover:text-gray-900 transition-colors">{takeaway}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+                
+                {index < video.recap.sections.length - 1 && (
+                  <div className="border-b border-blue-100 mt-4"></div>
+                )}
+              </motion.div>
+            ))}
+            
+            {/* Footer */}
+            <div className="mt-6 p-3 bg-white rounded-lg border border-blue-200">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-2">
+                  <div className="w-6 h-6 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center">
+                    <Zap size={12} className="text-white" />
+                  </div>
+                  <span className="text-sm font-medium text-gray-700">AI-Powered Summary</span>
+                </div>
+                <div className="flex items-center space-x-4">
+                  <button className="flex items-center space-x-1 text-sm text-blue-600 hover:text-blue-700 transition-colors">
+                    <SkipForward size={14} />
+                    <span>Jump to highlights</span>
+                  </button>
+                  <div className="text-xs text-gray-500">
+                    Generated in 2.3s
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+};
+
 // Video Card Component
 export const VideoCard = ({ video, onClick }) => {
   return (
