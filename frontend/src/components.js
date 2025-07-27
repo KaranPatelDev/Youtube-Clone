@@ -623,28 +623,27 @@ export const Header = ({ onMenuClick, onSearchChange, searchTerm, onOpenLogin, o
 
 // Sidebar Component
 export const Sidebar = ({ isOpen }) => {
+  const { user } = useAuth();
+  
   const mainItems = [
     { icon: Home, label: 'Home', active: true },
     { icon: TrendingUp, label: 'Trending' },
     { icon: Radio, label: 'Subscriptions' },
   ];
 
-  const libraryItems = [
+  const libraryItems = user ? [
     { icon: Library, label: 'Library' },
     { icon: History, label: 'History' },
     { icon: PlaySquare, label: 'Your videos' },
-    { icon: Clock, label: 'Watch later' },
-    { icon: ThumbsUp, label: 'Liked videos' },
-  ];
+    { icon: Clock, label: 'Watch later', count: user.watchLater?.length },
+    { icon: ThumbsUp, label: 'Liked videos', count: user.likedVideos?.length },
+  ] : [];
 
-  const subscriptions = [
-    'TechGamer Pro',
-    'QuickCook Kitchen', 
-    'PC Master Race',
-    'Adventure Seekers',
-    'Chef\'s Corner',
-    'Setup Masters'
-  ];
+  const subscriptions = user ? mockVideos
+    .filter(video => user.subscribedChannels?.includes(video.id))
+    .map(video => video.channel)
+    .filter((channel, index, self) => self.indexOf(channel) === index)
+    .slice(0, 6) : [];
 
   return (
     <aside className={`fixed left-0 top-14 h-[calc(100vh-56px)] bg-white border-r border-gray-200 transition-all duration-300 z-40 ${
@@ -667,7 +666,7 @@ export const Sidebar = ({ isOpen }) => {
           ))}
         </div>
 
-        {isOpen && (
+        {isOpen && user && (
           <>
             <div className="border-t border-gray-200 my-3"></div>
 
@@ -677,33 +676,63 @@ export const Sidebar = ({ isOpen }) => {
                 <motion.div
                   key={item.label}
                   whileHover={{ backgroundColor: '#f3f4f6' }}
-                  className="flex items-center px-3 py-2 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors"
+                  className="flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors"
                 >
-                  <item.icon size={20} className="text-gray-700" />
-                  <span className="ml-6 text-sm">{item.label}</span>
+                  <div className="flex items-center">
+                    <item.icon size={20} className="text-gray-700" />
+                    <span className="ml-6 text-sm">{item.label}</span>
+                  </div>
+                  {item.count > 0 && (
+                    <span className="text-xs bg-gray-200 px-2 py-1 rounded-full">
+                      {item.count}
+                    </span>
+                  )}
                 </motion.div>
               ))}
             </div>
 
-            <div className="border-t border-gray-200 my-3"></div>
+            {subscriptions.length > 0 && (
+              <>
+                <div className="border-t border-gray-200 my-3"></div>
 
-            {/* Subscriptions */}
-            <div className="px-3">
-              <h3 className="text-sm font-medium text-gray-700 mb-2 px-3">Subscriptions</h3>
-              {subscriptions.map((channel, index) => (
-                <motion.div
-                  key={channel}
-                  whileHover={{ backgroundColor: '#f3f4f6' }}
-                  className="flex items-center px-3 py-2 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors"
-                >
-                  <div className="w-6 h-6 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
-                    <span className="text-xs text-white font-semibold">
-                      {channel.charAt(0)}
-                    </span>
-                  </div>
-                  <span className="ml-6 text-sm truncate">{channel}</span>
-                </motion.div>
-              ))}
+                {/* Subscriptions */}
+                <div className="px-3">
+                  <h3 className="text-sm font-medium text-gray-700 mb-2 px-3">
+                    Subscriptions ({user.subscribedChannels?.length || 0})
+                  </h3>
+                  {subscriptions.map((channel, index) => (
+                    <motion.div
+                      key={channel}
+                      whileHover={{ backgroundColor: '#f3f4f6' }}
+                      className="flex items-center px-3 py-2 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors"
+                    >
+                      <div className="w-6 h-6 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
+                        <span className="text-xs text-white font-semibold">
+                          {channel.charAt(0)}
+                        </span>
+                      </div>
+                      <span className="ml-6 text-sm truncate">{channel}</span>
+                    </motion.div>
+                  ))}
+                </div>
+              </>
+            )}
+          </>
+        )}
+
+        {isOpen && !user && (
+          <>
+            <div className="border-t border-gray-200 my-3"></div>
+            <div className="px-6 py-4">
+              <p className="text-sm text-gray-600 mb-4">
+                Sign in to like videos, comment, and subscribe.
+              </p>
+              <div className="space-y-2">
+                <button className="w-full flex items-center justify-center space-x-2 px-3 py-2 border border-blue-600 text-blue-600 rounded-full hover:bg-blue-50 transition-colors">
+                  <LogIn size={16} />
+                  <span className="text-sm font-medium">Sign in</span>
+                </button>
+              </div>
             </div>
           </>
         )}
