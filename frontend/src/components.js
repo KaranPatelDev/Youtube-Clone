@@ -622,21 +622,64 @@ export const Header = ({ onMenuClick, onSearchChange, searchTerm, onOpenLogin, o
 };
 
 // Sidebar Component
-export const Sidebar = ({ isOpen }) => {
+export const Sidebar = ({ isOpen, currentSection, onSectionChange }) => {
   const { user } = useAuth();
   
   const mainItems = [
-    { icon: Home, label: 'Home', active: true },
-    { icon: TrendingUp, label: 'Trending' },
-    { icon: Radio, label: 'Subscriptions' },
+    { 
+      icon: Home, 
+      label: 'Home', 
+      section: 'home',
+      active: currentSection === 'home'
+    },
+    { 
+      icon: TrendingUp, 
+      label: 'Trending', 
+      section: 'trending',
+      active: currentSection === 'trending'
+    },
+    { 
+      icon: Radio, 
+      label: 'Subscriptions', 
+      section: 'subscriptions',
+      active: currentSection === 'subscriptions'
+    },
   ];
 
   const libraryItems = user ? [
-    { icon: Library, label: 'Library' },
-    { icon: History, label: 'History' },
-    { icon: PlaySquare, label: 'Your videos' },
-    { icon: Clock, label: 'Watch later', count: user.watchLater?.length },
-    { icon: ThumbsUp, label: 'Liked videos', count: user.likedVideos?.length },
+    { 
+      icon: Library, 
+      label: 'Library', 
+      section: 'library',
+      active: currentSection === 'library'
+    },
+    { 
+      icon: History, 
+      label: 'History', 
+      section: 'history',
+      active: currentSection === 'history',
+      count: user.watchHistory?.length
+    },
+    { 
+      icon: PlaySquare, 
+      label: 'Your videos', 
+      section: 'your-videos',
+      active: currentSection === 'your-videos'
+    },
+    { 
+      icon: Clock, 
+      label: 'Watch later', 
+      section: 'watch-later',
+      active: currentSection === 'watch-later',
+      count: user.watchLater?.length
+    },
+    { 
+      icon: ThumbsUp, 
+      label: 'Liked videos', 
+      section: 'liked-videos',
+      active: currentSection === 'liked-videos',
+      count: user.likedVideos?.length
+    },
   ] : [];
 
   const subscriptions = user ? mockVideos
@@ -645,6 +688,10 @@ export const Sidebar = ({ isOpen }) => {
     .filter((channel, index, self) => self.indexOf(channel) === index)
     .slice(0, 6) : [];
 
+  const handleItemClick = (section) => {
+    onSectionChange(section);
+  };
+
   return (
     <aside className={`fixed left-0 top-14 h-[calc(100vh-56px)] bg-white border-r border-gray-200 transition-all duration-300 z-40 ${
       isOpen ? 'w-60' : 'w-16'
@@ -652,13 +699,14 @@ export const Sidebar = ({ isOpen }) => {
       <div className="overflow-y-auto h-full py-3">
         {/* Main navigation */}
         <div className="px-3 mb-2">
-          {mainItems.map((item, index) => (
+          {mainItems.map((item) => (
             <motion.div
               key={item.label}
               whileHover={{ backgroundColor: '#f3f4f6' }}
               className={`flex items-center px-3 py-2 rounded-lg cursor-pointer transition-colors ${
                 item.active ? 'bg-gray-100 font-medium' : 'hover:bg-gray-100'
               }`}
+              onClick={() => handleItemClick(item.section)}
             >
               <item.icon size={20} className="text-gray-700" />
               {isOpen && <span className="ml-6 text-sm">{item.label}</span>}
@@ -672,11 +720,14 @@ export const Sidebar = ({ isOpen }) => {
 
             {/* Library section */}
             <div className="px-3 mb-2">
-              {libraryItems.map((item, index) => (
+              {libraryItems.map((item) => (
                 <motion.div
                   key={item.label}
                   whileHover={{ backgroundColor: '#f3f4f6' }}
-                  className="flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors"
+                  className={`flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer transition-colors ${
+                    item.active ? 'bg-gray-100 font-medium' : 'hover:bg-gray-100'
+                  }`}
+                  onClick={() => handleItemClick(item.section)}
                 >
                   <div className="flex items-center">
                     <item.icon size={20} className="text-gray-700" />
@@ -705,6 +756,7 @@ export const Sidebar = ({ isOpen }) => {
                       key={channel}
                       whileHover={{ backgroundColor: '#f3f4f6' }}
                       className="flex items-center px-3 py-2 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors"
+                      onClick={() => handleItemClick('subscriptions')}
                     >
                       <div className="w-6 h-6 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
                         <span className="text-xs text-white font-semibold">
