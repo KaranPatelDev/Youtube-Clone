@@ -930,36 +930,223 @@ export const VideoGrid = ({ videos, onVideoClick, searchTerm }) => {
   );
 };
 
+// Enhanced Comments Component
+export const CommentsSection = ({ video }) => {
+  const [newComment, setNewComment] = useState('');
+  const [comments, setComments] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { user, addComment, getCommentsForVideo, toggleLikeComment } = useAuth();
+
+  useEffect(() => {
+    const videoComments = getCommentsForVideo(video.id);
+    setComments(videoComments);
+  }, [video.id, getCommentsForVideo]);
+
+  const handleSubmitComment = async () => {
+    if (!user || !newComment.trim() || isSubmitting) return;
+
+    setIsSubmitting(true);
+    const comment = addComment(video.id, newComment.trim());
+    if (comment) {
+      setComments(prev => [comment, ...prev]);
+      setNewComment('');
+    }
+    setIsSubmitting(false);
+  };
+
+  const handleLikeComment = (commentId) => {
+    if (!user) return;
+    toggleLikeComment(commentId);
+    // Refresh comments
+    const updatedComments = getCommentsForVideo(video.id);
+    setComments(updatedComments);
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter' && e.ctrlKey) {
+      handleSubmitComment();
+    }
+  };
+
+  return (
+    <div className="mt-8">
+      <div className="flex items-center space-x-4 mb-6">
+        <h3 className="text-lg font-medium">Comments</h3>
+        <span className="text-gray-600">{comments.length}</span>
+      </div>
+      
+      {/* Add comment */}
+      {user ? (
+        <div className="mb-6">
+          <div className="flex space-x-3 mb-3">
+            <img 
+              src={user.avatar} 
+              alt={user.username}
+              className="w-8 h-8 rounded-full object-cover"
+            />
+            <div className="flex-1">
+              <textarea
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+                onKeyPress={handleKeyPress}
+                placeholder="Add a comment..."
+                className="w-full border-b border-gray-300 focus:border-gray-900 outline-none py-2 bg-transparent resize-none"
+                rows={1}
+                style={{ minHeight: '2.5rem' }}
+              />
+            </div>
+          </div>
+          
+          {newComment.trim() && (
+            <div className="flex justify-end space-x-2 ml-11">
+              <button
+                onClick={() => setNewComment('')}
+                className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSubmitComment}
+                disabled={isSubmitting}
+                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors disabled:opacity-50 flex items-center space-x-2"
+              >
+                <Send size={14} />
+                <span>{isSubmitting ? 'Posting...' : 'Comment'}</span>
+              </button>
+            </div>
+          )}
+        </div>
+      ) : (
+        <div className="mb-6 p-4 bg-gray-50 rounded-lg">
+          <p className="text-gray-600 text-center">
+            Sign in to leave a comment
+          </p>
+        </div>
+      )}
+      
+      {/* Comments list */}
+      <div className="space-y-4">
+        {comments.map((comment) => (
+          <div key={comment.id} className="flex space-x-3">
+            <img 
+              src={comment.avatar} 
+              alt={comment.username}
+              className="w-8 h-8 rounded-full object-cover"
+            />
+            <div className="flex-1">
+              <div className="flex items-center space-x-2 mb-1">
+                <span className="text-sm font-medium">{comment.username}</span>
+                <span className="text-xs text-gray-600">
+                  {formatDistanceToNow(new Date(comment.timestamp))} ago
+                </span>
+              </div>
+              <p className="text-sm text-gray-800 mb-2">{comment.text}</p>
+              <div className="flex items-center space-x-4">
+                <button 
+                  onClick={() => handleLikeComment(comment.id)}
+                  className={`flex items-center space-x-1 transition-colors ${
+                    user && comment.likedBy?.includes(user.id)
+                      ? 'text-blue-600 hover:text-blue-700'
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`}
+                >
+                  <ThumbsUp size={14} />
+                  <span className="text-xs">{comment.likes || 0}</span>
+                </button>
+                <button className="text-gray-600 hover:text-gray-900 transition-colors">
+                  <ThumbsDown size={14} />
+                </button>
+                <button className="text-xs text-gray-600 hover:text-gray-900 transition-colors">
+                  Reply
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
+        
+        {comments.length === 0 && (
+          <div className="text-center py-8 text-gray-500">
+            No comments yet. Be the first to comment!
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
 // Video Player Component
 export const VideoPlayer = ({ video, onBack }) => {
-  const [liked, setLiked] = useState(false);
-  const [disliked, setDisliked] = useState(false);
-  const [subscribed, setSubscribed] = useState(false);
+  const { 
+    user, 
+    toggleLikeVideo, 
+    toggleDislikeVideo, 
+    toggleSubscription, 
+    toggleWatchLater,
+    isVideoLiked, 
+    isVideoDisliked, 
+    isSubscribed,
+    isInWatchLater,
+    addToWatchHistory
+  } = useAuth();
 
-  // Mock comments data
-  const comments = [
-    {
-      id: 1,
-      user: 'TechEnthusiast2025',
-      comment: 'Amazing setup! That RGB lighting is insane 🔥',
-      time: '2 hours ago',
-      likes: 45
-    },
-    {
-      id: 2,
-      user: 'GamerGirl_X',
-      comment: 'This is exactly the setup I\'ve been dreaming of. Great video!',
-      time: '5 hours ago',
-      likes: 23
-    },
-    {
-      id: 3,
-      user: 'PCBuilder_Pro',
-      comment: 'Love the cable management! So clean 👌',
-      time: '1 day ago',
-      likes: 12
+  useEffect(() => {
+    // Add to watch history when video is viewed
+    if (user) {
+      addToWatchHistory(video.id);
     }
-  ];
+  }, [video.id, user, addToWatchHistory]);
+
+  const liked = isVideoLiked(video.id);
+  const disliked = isVideoDisliked(video.id);
+  const subscribed = isSubscribed(video.id);
+  const inWatchLater = isInWatchLater(video.id);
+
+  const handleLike = () => {
+    if (!user) {
+      alert('Please sign in to like videos');
+      return;
+    }
+    toggleLikeVideo(video.id);
+  };
+
+  const handleDislike = () => {
+    if (!user) {
+      alert('Please sign in to dislike videos');
+      return;
+    }
+    toggleDislikeVideo(video.id);
+  };
+
+  const handleSubscribe = () => {
+    if (!user) {
+      alert('Please sign in to subscribe');
+      return;
+    }
+    toggleSubscription(video.id);
+  };
+
+  const handleWatchLater = () => {
+    if (!user) {
+      alert('Please sign in to save to Watch Later');
+      return;
+    }
+    toggleWatchLater(video.id);
+  };
+
+  const handleShare = () => {
+    const url = `${window.location.origin}/video/${video.id}`;
+    if (navigator.share) {
+      navigator.share({
+        title: video.title,
+        text: `Check out this video: ${video.title}`,
+        url: url,
+      });
+    } else {
+      navigator.clipboard.writeText(url).then(() => {
+        alert('Video link copied to clipboard!');
+      });
+    }
+  };
 
   // Generate YouTube embed URL (mock)
   const videoId = 'dQw4w9WgXcQ'; // Mock video ID
@@ -1022,7 +1209,7 @@ export const VideoPlayer = ({ video, onBack }) => {
                   <p className="text-sm text-gray-600">{Math.floor(Math.random() * 500 + 100)}K subscribers</p>
                 </div>
                 <button
-                  onClick={() => setSubscribed(!subscribed)}
+                  onClick={handleSubscribe}
                   className={`px-4 py-2 rounded-full font-medium transition-colors ${
                     subscribed 
                       ? 'bg-gray-200 text-gray-700 hover:bg-gray-300' 
@@ -1036,10 +1223,7 @@ export const VideoPlayer = ({ video, onBack }) => {
               <div className="flex items-center space-x-2">
                 <div className="flex items-center bg-gray-100 rounded-full overflow-hidden">
                   <button
-                    onClick={() => {
-                      setLiked(!liked);
-                      if (disliked) setDisliked(false);
-                    }}
+                    onClick={handleLike}
                     className={`px-4 py-2 flex items-center space-x-2 transition-colors ${
                       liked ? 'bg-blue-100 text-blue-600' : 'hover:bg-gray-200'
                     }`}
@@ -1049,10 +1233,7 @@ export const VideoPlayer = ({ video, onBack }) => {
                   </button>
                   <div className="w-px h-6 bg-gray-300"></div>
                   <button
-                    onClick={() => {
-                      setDisliked(!disliked);
-                      if (liked) setLiked(false);
-                    }}
+                    onClick={handleDislike}
                     className={`px-4 py-2 transition-colors ${
                       disliked ? 'bg-red-100 text-red-600' : 'hover:bg-gray-200'
                     }`}
@@ -1061,14 +1242,24 @@ export const VideoPlayer = ({ video, onBack }) => {
                   </button>
                 </div>
                 
-                <button className="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors flex items-center space-x-2">
+                <button 
+                  onClick={handleShare}
+                  className="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors flex items-center space-x-2"
+                >
                   <Share size={16} />
                   <span className="text-sm">Share</span>
                 </button>
                 
-                <button className="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors flex items-center space-x-2">
-                  <Download size={16} />
-                  <span className="text-sm">Download</span>
+                <button 
+                  onClick={handleWatchLater}
+                  className={`px-4 py-2 rounded-full transition-colors flex items-center space-x-2 ${
+                    inWatchLater 
+                      ? 'bg-blue-100 text-blue-600 hover:bg-blue-200'
+                      : 'bg-gray-100 hover:bg-gray-200'
+                  }`}
+                >
+                  {inWatchLater ? <BookmarkCheck size={16} /> : <Bookmark size={16} />}
+                  <span className="text-sm">{inWatchLater ? 'Saved' : 'Save'}</span>
                 </button>
               </div>
             </div>
@@ -1091,58 +1282,7 @@ export const VideoPlayer = ({ video, onBack }) => {
             )}
             
             {/* Comments section */}
-            <div className="mt-8">
-              <div className="flex items-center space-x-4 mb-6">
-                <h3 className="text-lg font-medium">Comments</h3>
-                <span className="text-gray-600">{comments.length}</span>
-              </div>
-              
-              {/* Add comment */}
-              <div className="flex space-x-3 mb-6">
-                <div className="w-8 h-8 bg-gradient-to-r from-green-500 to-blue-500 rounded-full flex items-center justify-center">
-                  <span className="text-white text-sm font-semibold">U</span>
-                </div>
-                <div className="flex-1">
-                  <input
-                    type="text"
-                    placeholder="Add a comment..."
-                    className="w-full border-b border-gray-300 focus:border-gray-900 outline-none py-2 bg-transparent"
-                  />
-                </div>
-              </div>
-              
-              {/* Comments list */}
-              <div className="space-y-4">
-                {comments.map((comment) => (
-                  <div key={comment.id} className="flex space-x-3">
-                    <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
-                      <span className="text-white text-sm font-semibold">
-                        {comment.user.charAt(0)}
-                      </span>
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center space-x-2 mb-1">
-                        <span className="text-sm font-medium">{comment.user}</span>
-                        <span className="text-xs text-gray-600">{comment.time}</span>
-                      </div>
-                      <p className="text-sm text-gray-800 mb-2">{comment.comment}</p>
-                      <div className="flex items-center space-x-4">
-                        <button className="flex items-center space-x-1 text-gray-600 hover:text-gray-900 transition-colors">
-                          <ThumbsUp size={14} />
-                          <span className="text-xs">{comment.likes}</span>
-                        </button>
-                        <button className="text-gray-600 hover:text-gray-900 transition-colors">
-                          <ThumbsDown size={14} />
-                        </button>
-                        <button className="text-xs text-gray-600 hover:text-gray-900 transition-colors">
-                          Reply
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <CommentsSection video={video} />
           </div>
         </div>
         
