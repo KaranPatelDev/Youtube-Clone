@@ -189,7 +189,7 @@ export const TrendingSection = ({ onVideoClick }) => {
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center space-x-4">
           <div className="flex items-center space-x-2">
-            <Fire className="text-red-500" size={24} />
+            <Flame className="text-red-500" size={24} />
             <h1 className="text-2xl font-semibold text-gray-900">Trending</h1>
           </div>
           
