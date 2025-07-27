@@ -523,59 +523,101 @@ export const mockVideos = [
 ];
 
 // Header Component
-export const Header = ({ onMenuClick, onSearchChange, searchTerm }) => {
+export const Header = ({ onMenuClick, onSearchChange, searchTerm, onOpenLogin, onOpenRegister }) => {
   const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const [showUploadModal, setShowUploadModal] = useState(false);
+  const { user, logout } = useAuth();
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200 h-14">
-      <div className="flex items-center justify-between px-4 h-full">
-        {/* Left section */}
-        <div className="flex items-center space-x-4">
-          <button 
-            onClick={onMenuClick}
-            className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-          >
-            <Menu size={20} />
-          </button>
-          <div className="flex items-center space-x-1">
-            <div className="w-8 h-8 bg-red-600 rounded flex items-center justify-center">
-              <Play size={16} className="text-white ml-0.5" />
-            </div>
-            <span className="text-xl font-semibold text-black">YouTube</span>
-          </div>
-        </div>
-
-        {/* Center section - Search */}
-        <div className="flex items-center max-w-2xl flex-1 mx-8">
-          <div className={`flex items-center flex-1 border rounded-full overflow-hidden transition-all ${
-            isSearchFocused ? 'border-blue-500 shadow-md' : 'border-gray-300'
-          }`}>
-            <input
-              type="text"
-              placeholder="Search"
-              value={searchTerm}
-              onChange={(e) => onSearchChange(e.target.value)}
-              onFocus={() => setIsSearchFocused(true)}
-              onBlur={() => setIsSearchFocused(false)}
-              className="flex-1 px-4 py-2 outline-none"
-            />
-            <button className="px-6 py-2 bg-gray-50 border-l border-gray-300 hover:bg-gray-100 transition-colors">
-              <Search size={20} className="text-gray-600" />
+    <>
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200 h-14">
+        <div className="flex items-center justify-between px-4 h-full">
+          {/* Left section */}
+          <div className="flex items-center space-x-4">
+            <button 
+              onClick={onMenuClick}
+              className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+            >
+              <Menu size={20} />
             </button>
+            <div className="flex items-center space-x-1">
+              <div className="w-8 h-8 bg-red-600 rounded flex items-center justify-center">
+                <Play size={16} className="text-white ml-0.5" />
+              </div>
+              <span className="text-xl font-semibold text-black">YouTube</span>
+            </div>
+          </div>
+
+          {/* Center section - Search */}
+          <div className="flex items-center max-w-2xl flex-1 mx-8">
+            <div className={`flex items-center flex-1 border rounded-full overflow-hidden transition-all ${
+              isSearchFocused ? 'border-blue-500 shadow-md' : 'border-gray-300'
+            }`}>
+              <input
+                type="text"
+                placeholder="Search"
+                value={searchTerm}
+                onChange={(e) => onSearchChange(e.target.value)}
+                onFocus={() => setIsSearchFocused(true)}
+                onBlur={() => setIsSearchFocused(false)}
+                className="flex-1 px-4 py-2 outline-none"
+              />
+              <button className="px-6 py-2 bg-gray-50 border-l border-gray-300 hover:bg-gray-100 transition-colors">
+                <Search size={20} className="text-gray-600" />
+              </button>
+            </div>
+          </div>
+
+          {/* Right section */}
+          <div className="flex items-center space-x-2">
+            {user ? (
+              <>
+                <button 
+                  onClick={() => setShowUploadModal(true)}
+                  className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                  title="Upload video"
+                >
+                  <Upload size={20} />
+                </button>
+                <button className="p-2 hover:bg-gray-100 rounded-full transition-colors relative">
+                  <Bell size={20} />
+                  {user.notifications?.filter(n => !n.read).length > 0 && (
+                    <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-600 rounded-full"></div>
+                  )}
+                </button>
+                <UserMenu 
+                  user={user} 
+                  onLogout={logout}
+                  onOpenSettings={() => console.log('Open settings')}
+                />
+              </>
+            ) : (
+              <>
+                <button 
+                  onClick={onOpenLogin}
+                  className="flex items-center space-x-1 px-3 py-1.5 text-blue-600 border border-blue-600 rounded-full hover:bg-blue-50 transition-colors"
+                >
+                  <LogIn size={16} />
+                  <span className="text-sm font-medium">Sign in</span>
+                </button>
+                <button 
+                  onClick={onOpenRegister}
+                  className="flex items-center space-x-1 px-3 py-1.5 bg-red-600 text-white rounded-full hover:bg-red-700 transition-colors"
+                >
+                  <UserPlus size={16} />
+                  <span className="text-sm font-medium">Sign up</span>
+                </button>
+              </>
+            )}
           </div>
         </div>
+      </header>
 
-        {/* Right section */}
-        <div className="flex items-center space-x-2">
-          <button className="p-2 hover:bg-gray-100 rounded-full transition-colors">
-            <Bell size={20} />
-          </button>
-          <button className="p-2 hover:bg-gray-100 rounded-full transition-colors">
-            <User size={20} />
-          </button>
-        </div>
-      </div>
-    </header>
+      <UploadModal 
+        isOpen={showUploadModal}
+        onClose={() => setShowUploadModal(false)}
+      />
+    </>
   );
 };
 
