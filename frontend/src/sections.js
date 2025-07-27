@@ -18,7 +18,7 @@ import {
   Calendar,
   PlayCircle,
   Users,
-  Fire,
+  Flame,
   Star,
   Settings,
   SortAsc,
